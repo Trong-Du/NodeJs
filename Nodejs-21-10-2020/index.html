@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="ckeditor/ckeditor.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Register</h2>
+        <form id="RegisterForm">
+            <div class="form-group">
+                <label for="email2" class="mb-2 mr-sm-2">User Name:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="username" placeholder="Enter email"
+                    name="username">
+            </div>
+            <div class="form-group">
+                <label for="pwd2" class="mb-2 mr-sm-2">Password:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="password" placeholder="Enter password"
+                    name="password">
+            </div>
+            <div class="form-group">
+                <label for="email" class="mb-2 mr-sm-2">Email:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="email" placeholder="Enter Email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="email" class="mb-2 mr-sm-2">Fullname:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="email" placeholder="Enter Fullname"
+                    name="fullname">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="pwd">Content</label>
+                <textarea cols="20" class="form-control" id="content" name="content"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#uploadModal">Upload
+                    your photos</button>
+            </div>
+            <label for="email" class="mb-2 mr-sm-2" id="urlPath">Url path here</label>
+            <input type="text" id="urlPathInput" hidden>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mb-2">Submit</button>
+            </div>
+        </form>
+        <!-- Modal -->
+        <div class="modal fade" id="uploadModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <form action="" id="img_upload" name="img_upload" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="img">Photo</label>
+                            <input type="file" name="img" id="img">
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <label for="email" class="mb-2 mr-sm-2" id="urlPath">
+                                    <ul> <span style="color: red">Please notes:</span>
+                                        <li>File extension .jpg, .png</li>
+                                        <li>File size can't greater than 100KB</li>
+                                    </ul>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        CKEDITOR.replace('content');
+        $(document).ready(() => {
+            $("#img_upload").on("submit", (e) => {
+                e.preventDefault();
+                var data = new FormData(document.getElementById("img_upload"));
+                $.ajax({
+                    url: "upload-file",
+                    type: "post",
+                    data: data,
+                    ///remember for upload
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: (result) => {
+                        if(result.status == "success") {
+                            $("#urlPath").html("<p>Current URL: " + result.res.path + "</p><p>Original name: " + result.res.originalname + "</p><p>Size: " + result.res.size + "</p>");$("#urlPathInput").val(result.res.filename);
+                            $('#uploadModal').modal('toggle');
+                        } else {
+                            console.log(result.res);
+                        }
+                    }
+                });
+            });
+            $("#RegisterForm").on("submit", (e) => {
+                //prevent to reload the form
+                e.preventDefault();
+
+                var dataContent = CKEDITOR.instances.content.getData();
+                // var username, password;
+
+                // //get value
+                // username = $("#username").val();
+                // password = $("#password").val();
+                // if (username === '' && password === '') {
+                //     console.log("Please input username/password");
+                //     return;
+                // }
+                // if (username === '') {
+                //     console.log("Please input username");
+                //     return;
+                // }
+                // if (password === '') {
+                //     console.log("Please input password");
+                //     return;
+                // }
+                // // Send Ajax
+                // $.ajax({
+                //     url: 'getUserInfo/',
+                //     type: 'POST',
+                //     data: {
+                //         "username": username,
+                //         "password": password,
+                //         "dataContent": dataContent
+                //     },
+                //     success: (result) => {
+                //         console.log(result);
+                //     }
+                // });
+            })
+        });
+    </script>
+
+</body>
+
+</html>

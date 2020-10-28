@@ -1,0 +1,1 @@
+This is the append file product_controller.js

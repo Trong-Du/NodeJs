@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Giải phương trình bậc 1</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="ptb1" class="container">
+  <h2>Giải Phương trình bậc 1</h2>
+  <form class="form-inline" action="/action_page.php">
+    <label for="numberA" class="mb-2 mr-sm-2">Số a</label>
+    <input type="number" class="form-control mb-2 mr-sm-2" id="numberA" placeholder="Nhập số a" name="numberA" required pattern="[0-9]{4}">
+    <label for="numberB" class="mb-2 mr-sm-2">Số b</label>
+    <input type="number" class="form-control mb-2 mr-sm-2" id="numberB" placeholder="Nhập số b" name="numberB" required pattern="[0-9]{4}"> 
+    <label for="result" class="mb-2 mr-sm-2">Kết quả</label>
+    <input type="number" class="form-control mb-2 mr-sm-2" id="result" placeholder="Kết quả" name="result"> 
+    <button type="submit" class="btn btn-primary mb-2">Result</button>
+  </form>
+</div>
+
+</body>
+<script>
+    $(document).ready(() => {
+        $("#ptb1").on("submit",(e) => {
+            //prevent to reload the form
+            e.preventDefault();
+            var numberA, numberB, flag = 1, err = "";
+
+            //get value
+            numberA = $("#numberA").val();
+            numberB = $("#numberB").val();
+            if(numberA!==undefined && numberB !== undefined) {
+                $("#result").val(Number(numberA)+Number(numberB));
+            }
+
+            //Validate
+
+            // Send Ajax
+            // $.ajax({
+            //     url: 'giaiPTB1/',
+            //     type: 'POST',
+            //     data: {
+            //         "numberA": numberA,
+            //         "numberB": numberB
+            //     },
+            //     success: (result) => {
+            //         console.log(result);
+            //     }
+            // });
+
+            // Send Ajax
+            $.ajax({
+                url: 'giaiPTB1GET/'+numberA+"/"+numberB,
+                type: 'GET',
+                success: (result) => {
+                    console.log(result);
+                }
+            });
+
+
+            // alert("Alredy prevent reload the page!");
+        })
+    });
+</script>
+</html>
