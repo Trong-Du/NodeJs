@@ -1,0 +1,26 @@
+Tạo trang admin
+
+I. Dashboard
+
+1. header
+2. Main (Sidebar, main home)
+    Sidebar: chứa đi link: Dashboard, Danh mục, sản phẩm, thành viên
+3.footer
+
+II. Danh mục
+
+1. Main category (Thêm, sửa xóa)
+2. add category (Name, link, img, status)
+3. Edit category
+
+III. Sản phẩm
+
+1. Main product (Thêm, sửa xóa)
+2. add product (Name, link, category (select), content (ckeditor), img, status)
+3. Edit product
+
+IV. Thành viên
+
+1. Main user (Thêm, sửa xóa)
+2. add user
+3. Edit user

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Online chat</title>
+</head>
+
+<body>
+    <h2>This is the chat app</h2>
+    <p>Hello</p>
+    <h3 id="onlyRequestClient"></h3>
+    <label for="content">Content</label>
+    <input type="text" id="content">
+    <input type="button" id="result" value="Result">
+    <script>
+
+        var socket = io();
+        socket.on("server-onlyRequestClient", (result) => {
+            $('#onlyRequestClient').text(result);
+        });
+        $(document).ready(() => {
+            $("#result").on('click', () => {
+                var content = $("#content").val();
+                // send data to server
+                socket.emit("client-onlyRequestClient", content);
+            });
+            $("#content").on("keydown", function (event) {
+                if (event.which == 13) {
+                    var content = $("#content").val();
+                    // send data to server
+                    socket.emit("client-onlyRequestClient", content);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
