@@ -1,0 +1,147 @@
+
+<script src="ckeditor/ckeditor.js"></script>
+<body>
+
+    <div class="container">
+        <h2>Edit</h2>
+        <form id="RegisterForm">
+            <div class="form-group">
+                <label for="email2" class="mb-2 mr-sm-2">User Name:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="username" placeholder="Enter email"
+                    name="username" value="<%=data[0].name%>">
+            </div>
+            <div class="form-group">
+                <label for="email" class="mb-2 mr-sm-2">Email:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="email" placeholder="Enter Email" name="email" value="<%=data[0].email%>">
+            </div>
+            <div class="form-group">
+                <label for="fullname" class="mb-2 mr-sm-2">Fullname:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="fullname" placeholder="Enter Fullname"
+                    name="fullname" value="<%=data[0].name%>">
+            </div>
+            <div class="form-group">
+                <label for="phone" class="mb-2 mr-sm-2">Phone Number:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="phone" placeholder="Phone Number"
+                    name="phone" value="<%=data[0].phone%>">
+            </div>
+            <div class="form-group">
+                <label for="address" class="mb-2 mr-sm-2">Address:</label>
+                <input type="text" class="form-control mb-2 mr-sm-2" id="address" placeholder="Address"
+                    name="address" value="<%=data[0].address%>">
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="pwd">Content</label>
+                <textarea cols="20" class="form-control" id="content" name="content"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#uploadModal">Upload
+                    your photos</button>
+            </div>
+            <label for="email" class="mb-2 mr-sm-2" id="urlPath">Url path here</label>
+            <input type="text" id="urlPathInput" hidden>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                <button type="submit" class="btn btn-success mb-2">Change Password</button>
+            </div>
+        </form>
+        <!-- Modal -->
+        <div class="modal fade" id="uploadModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <form action="" id="img_upload" name="img_upload" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="img">Photo</label>
+                            <input type="file" name="img" id="img">
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <label for="email" class="mb-2 mr-sm-2" id="urlPath">
+                                    <ul> <span style="color: red">Please notes:</span>
+                                        <li>File extension .jpg, .png</li>
+                                        <li>File size can't greater than 100KB</li>
+                                    </ul>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        CKEDITOR.replace('content');
+        $(document).ready(() => {
+            $("#img_upload").on("submit", (e) => {
+                e.preventDefault();
+                var data = new FormData(document.getElementById("img_upload"));
+                $.ajax({
+                    url: "upload-file",
+                    type: "post",
+                    data: data,
+                    ///remember for upload
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: (result) => {
+                        if(result.status == "success") {
+                            $("#urlPath").html("<p>Current URL: " + result.res.path + "</p><p>Original name: " + result.res.originalname + "</p><p>Size: " + result.res.size + "</p>");$("#urlPathInput").val(result.res.filename);
+                            $('#uploadModal').modal('toggle');
+                        } else {
+                            console.log(result.res);
+                        }
+                    }
+                });
+            });
+            $("#RegisterForm").on("submit", (e) => {
+                //prevent to reload the form
+                e.preventDefault();
+                user_id = $("#user_id").val();
+                username = $("#username").val();
+                email = $("#email").val();
+                fullname = $("#fullname").val();
+                phone = $("#phone").val();
+                address = $("#address").val();
+                var dataContent = CKEDITOR.instances.content.getData();
+                if (username === '' && password === '') {
+                    console.log("Please input username/password");
+                    return;
+                }
+                if (username === '') {
+                    console.log("Please input username");
+                    return;
+                }
+                // Send Ajax
+                $.ajax({
+                    url: 'user/edit/updateUserInfo/',
+                    type: 'POST',
+                    data: {
+                        "user_id": "<%=data[0]._id%>",
+                        "username": username,
+                        "email": email,
+                        "fullname": fullname,
+                        "phone": phone,
+                        "address": address,
+                        "dataContent": dataContent
+                    },
+                    success: (result) => {
+                      if(result.result) {
+                        window.location.href = '/user'
+                      } else {
+                        console.log(result);
+                        alert("Cap nhat that bai");
+                      }
+                    }
+                });
+            })
+        });
+    </script>

@@ -1,0 +1,77 @@
+<div class="container">
+  <h2>Thông tin danh mục</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <p>
+        <a href="category/add" class="btn btn-primary">
+          Thêm
+        </a>
+      </p>
+    </div>
+    <div class="col-md-6">
+      <form class="form-inline" action="/action_page.php">
+        <input class="form-control mr-sm-2" id="search-info" type="text" placeholder="Search">
+        <button class="btn btn-success" type="submit" id="btnSearch">Search</button>
+      </form>
+    </div>
+  </div>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Link</th>
+        <th>User</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%-str%>
+    </tbody>
+  </table>
+  <ul class="pagination pagination-sm">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</div>
+<script>
+  $("#btnSearch").on('click', () => {
+    var search_info = $("#btnSearch").val();
+    $.ajax({
+      url: 'user/searchUser/',
+      type: 'POST',
+      data: {
+        "search_info": search_info
+      },
+      success: (result) => {
+        // if (result.result) {
+        //   alert("Xoa thanh cong");
+        //   $('#' + id).remove();
+        // } else {
+        //   alert("Xoa that bai");
+        // }
+      }
+    });
+  });
+  function _delete(id) {
+    $.ajax({
+      url: 'user/deleteUser/',
+      type: 'POST',
+      data: {
+        "id": id
+      },
+      success: (result) => {
+        if (result.result) {
+          alert("Xoa thanh cong");
+          $('#' + id).remove();
+        } else {
+          alert("Xoa that bai");
+        }
+      }
+    });
+  }
+
+</script>
+<!-- The Modal -->
