@@ -1,0 +1,61 @@
+<style>
+  .container {
+    width: 80vw;
+    margin: auto;
+    font-size: 16px;
+  }
+  header {
+    background-color: aqua;
+    padding: 10px;
+    text-align: center;
+  }
+  nav {
+    background-color: darkslategray;
+    padding: 10px;
+    text-align: center;
+  }
+  .main-wrapper {
+    display: flex;
+  }
+  .main-wrapper .sidebar {
+    width: 20%;
+  }
+  .main-wrapper .main {
+    width: 80%;
+  }
+  footer {
+    background-color: chocolate;
+    padding: 10px;
+    text-align: center;
+  }
+</style>
+<header>
+  <div class="container">header</div>
+</header>
+<nav>
+  <div class="container">menu</div>
+</nav>
+<main>
+  <div class="container">
+    <div class="main-wrapper">
+      <div class="sidebar">
+        <ul>
+          <li><a routerLink="/">Trang chủ</a></li>
+          <li><a routerLink="danh-muc/abc">Danh mục</a></li>
+          <li><a routerLink="san-pham/abc">Sản phẩm</a></li>
+          <li><a routerLink="tin-tuc/abc">Tin tức</a></li>
+          <li><a routerLink="dang-nhap.html">Đăng nhập</a></li>
+          <li><a routerLink="dang-ky.html">Đăng ký</a></li>
+          <li><a routerLink="lien-he.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="main">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">footer</div>
+</footer>
